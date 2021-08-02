@@ -123,6 +123,9 @@ def confereFim(tabuleiro, jogador):
     return acabou
 
 def jogadaMaquina(tabuleiro, jogada):
+    print()
+    print('#', jogada)
+    print()
     """
     Processa a jogada que deve ser feita pela máquina
     Parâmetros: tabuleiro, rodada (Contagem de quantas jogadas foram feitas)
@@ -130,7 +133,73 @@ def jogadaMaquina(tabuleiro, jogada):
     """
     if jogada == 1:
         tabuleiro["A"][0] = "X"
-    
+    elif jogada == 3:
+        if tabuleiro['C'][2] == '':
+            tabuleiro['C'][2] = 'X'
+        else:
+            tabuleiro['A'][2] = 'X'
+    elif jogada == 5:
+        if tabuleiro['A'][1] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == '':
+            tabuleiro['C'][1] = 'X'
+        elif tabuleiro['A'][1] == 'O' and tabuleiro['C'][1] == 'O' and tabuleiro['B'][1] == '':
+            tabuleiro['B'][1] = 'X'
+        elif tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == 'O' and tabuleiro['A'][1] == '':
+            tabuleiro['A'][1] = 'X'
+        elif tabuleiro['B'][0] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == '':
+            tabuleiro['B'][2] = 'X'
+        elif tabuleiro['B'][0] == 'O' and tabuleiro['B'][2] == 'O' and tabuleiro['B'][1] == '':
+            tabuleiro['B'][1] = 'X'
+        elif tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == 'O' and tabuleiro['B'][0] == '':
+            tabuleiro['B'][0] = 'X'
+        elif tabuleiro['C'][0] == '':
+            tabuleiro['C'][0] = 'X'
+        elif tabuleiro['B'][1] == '':
+            tabuleiro['B'][1] = 'X'
+        elif tabuleiro['A'][2] == '':
+            tabuleiro['A'][2] = 'X'
+    elif jogada == 7:
+        if tabuleiro['A'][0] == 'X' and tabuleiro['C'][0] == 'X' and tabuleiro['B'][0] == '':
+            tabuleiro['B'][0] = 'X'
+        elif tabuleiro['C'][0] == 'X' and tabuleiro['C'][2] == 'X' and tabuleiro['C'][1] == '':
+            tabuleiro['C'][1] = 'X'
+        elif tabuleiro['A'][0] == 'X' and tabuleiro['A'][2] == 'X' and tabuleiro['A'][1] == '':
+            tabuleiro['A'][1] = 'X'
+        elif tabuleiro['A'][1] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == '':
+            tabuleiro['C'][1] = 'X'
+        elif tabuleiro['A'][1] == 'O' and tabuleiro['C'][1] == 'O' and tabuleiro['B'][1] == '':
+            tabuleiro['B'][1] = 'X'
+        elif tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == 'O' and tabuleiro['A'][1] == '':
+            tabuleiro['A'][1] = 'X'
+        elif tabuleiro['B'][0] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == '':
+            tabuleiro['B'][2] = 'X'
+        elif tabuleiro['B'][0] == 'O' and tabuleiro['B'][2] == 'O' and tabuleiro['B'][1] == '':
+            tabuleiro['B'][1] = 'X'
+        elif tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == 'O' and tabuleiro['B'][0] == '':
+            tabuleiro['B'][0] = 'X'
+        elif tabuleiro['C'][0] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['A'][2] == '':
+            tabuleiro['A'][2] = 'X'
+        elif tabuleiro['C'][0] == 'O' and tabuleiro['A'][2] == 'O' and tabuleiro['B'][1] == '':
+            tabuleiro['A'][0] = 'X'
+        elif tabuleiro['B'][1] == 'O' and tabuleiro['A'][2] == 'O' and tabuleiro['C'][0] == '':
+            tabuleiro['C'][0] = 'X'
+        elif (tabuleiro['A'][2] == 'X' and tabuleiro['C'][0] == 'X' and tabuleiro['B'][1] == '') or (tabuleiro['A'][0] == 'X' and tabuleiro['C'][2] == 'X' and tabuleiro['B'][1] == ''):
+            tabuleiro['B'][1] = 'X'
+        elif tabuleiro['B'][0] == '':
+            tabuleiro['B'][0] = 'X'
+        elif tabuleiro['C'][1] == '':
+            tabuleiro['C'][1] = 'X'
+        elif tabuleiro['A'][1] == '':
+            tabuleiro['A'][1] = 'X'
+        elif tabuleiro['B'][1] == '':
+            tabuleiro['B'][1] = 'X'
+    elif jogada == 9:
+        for i in range(3):
+            if tabuleiro['A'][i] == '':
+                tabuleiro['A'][i] = 'X'
+            elif tabuleiro['B'][i] == '':
+                tabuleiro['B'][i] = 'X'
+            elif tabuleiro['C'][i] == '':
+                tabuleiro['C'][i] = 'X'
 
     return tabuleiro
 
@@ -152,8 +221,10 @@ print("Instruções:\nDigite as coordenadas da sua jogada no formato letra e num
 # Loop enquanto jogo não acabar que cicla em jogada da maquina e jogada do usuario com as devidas validações de entrada e fim de jogo
 while not acabou:
     rodada += 1
-    tabuleiro = jogadaMaquina(tabuleiro, rodada)
-    acabou = confereFim(tabuleiro, "X")
-    imprimiTabuleiro(tabuleiro)
-    tabuleiro = jogada(tabuleiro)
-    acabou = confereFim(tabuleiro, "O")
+    if rodada % 2 == 1:
+        tabuleiro = jogadaMaquina(tabuleiro, rodada)
+        acabou = confereFim(tabuleiro, "X")
+    else:
+        imprimiTabuleiro(tabuleiro)
+        tabuleiro = jogada(tabuleiro)
+        acabou = confereFim(tabuleiro, "O")
