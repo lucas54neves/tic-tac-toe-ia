@@ -122,85 +122,116 @@ def confereFim(tabuleiro, jogador):
         acabou = confereEmpate(tabuleiro)
     return acabou
 
+def tentarVencer(tabuleiro):
+    if tabuleiro['B'][1] == '' and tabuleiro['A'][0] == 'X' and tabuleiro['C'][2] == 'X':
+        tabuleiro['B'][1] = 'X'
+    elif tabuleiro['C'][2] == '' and tabuleiro['A'][0] == 'X' and tabuleiro['B'][1] == 'X':
+        tabuleiro['C'][2] = 'X'
+    elif tabuleiro['B'][0] == '' and tabuleiro['B'][1] == 'X' and tabuleiro['B'][2] == 'X':
+        tabuleiro['B'][0] = 'X'
+    elif tabuleiro['B'][1] == '' and tabuleiro['B'][0] == 'X' and tabuleiro['B'][2] == 'X':
+        tabuleiro['B'][1] = 'X'
+    elif tabuleiro['B'][2] == '' and tabuleiro['B'][0] == 'X' and tabuleiro['B'][1] == 'X':
+        tabuleiro['B'][2] = 'X'
+    elif tabuleiro['C'][0] == '' and tabuleiro['B'][1] == 'X' and tabuleiro['A'][2] == 'X':
+        tabuleiro['C'][0] = 'X'
+    elif tabuleiro['B'][1] == '' and tabuleiro['C'][0] == 'X' and tabuleiro['A'][2] == 'X':
+        tabuleiro['B'][1] = 'X'
+    elif tabuleiro['A'][2] == '' and tabuleiro['C'][0] == 'X' and tabuleiro['B'][1] == 'X':
+        tabuleiro['A'][2] = 'X'
+    elif tabuleiro['C'][1] == '' and tabuleiro['B'][1] == 'X' and tabuleiro['A'][1] == 'X':
+        tabuleiro['C'][1] = 'X'
+    elif tabuleiro['B'][1] == '' and tabuleiro['C'][1] == 'X' and tabuleiro['A'][1] == 'X':
+        tabuleiro['B'][1] = 'X'
+    elif tabuleiro['A'][1] == '' and tabuleiro['C'][1] == 'X' and tabuleiro['B'][1] == 'X':
+        tabuleiro['A'][1] = 'X'
+    else:
+        return (False, tabuleiro)
+    return (True, tabuleiro)
+
+def impedirVitoria(tabuleiro):
+    if tabuleiro['A'][1] == '' and tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == 'O':
+        tabuleiro['A'][1] = 'X'
+    elif tabuleiro['B'][1] == '' and tabuleiro['A'][1] == 'O' and tabuleiro['C'][1] == 'O':
+        tabuleiro['B'][1] = 'X'
+    elif tabuleiro['C'][1] == '' and tabuleiro['A'][1] == 'O' and tabuleiro['B'][1] == 'O':
+        tabuleiro['C'][1] = 'X'
+    elif tabuleiro['B'][0] == '' and tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == 'O':
+        tabuleiro['B'][0] = 'X'
+    elif tabuleiro['B'][1] == '' and tabuleiro['B'][0] == 'O' and tabuleiro['B'][2] == 'O':
+        tabuleiro['B'][1] = 'X'
+    elif tabuleiro['B'][2] == '' and tabuleiro['B'][0] == 'O' and tabuleiro['B'][1] == 'O':
+        tabuleiro['B'][2] = 'X'
+    elif tabuleiro['C'][0] == '' and tabuleiro['B'][1] == 'O' and tabuleiro['A'][2] == 'O':
+        tabuleiro['C'][0] = 'X'
+    elif tabuleiro['B'][1] == '' and tabuleiro['C'][0] == 'O' and tabuleiro['A'][2] == 'O':
+        tabuleiro['B'][1] = 'X'
+    elif tabuleiro['A'][2] == '' and tabuleiro['C'][0] == 'O' and tabuleiro['B'][1] == 'O':
+        tabuleiro['A'][2] = 'X'
+    else:
+        return (False, tabuleiro)
+    return (True, tabuleiro)
+
+def tentarEstrategia(tabuleiro, jogada):
+    if jogada == 1: # 1x vs 0o
+        tabuleiro["A"][0] = "X"
+    elif jogada == 3: # 2x vs 1o
+        if tabuleiro['B'][1] == '':
+            tabuleiro['B'][1] = 'X'
+        else:
+            tabuleiro['A'][2] = 'X'
+    elif jogada == 5: # 3x vs 2o
+        if tabuleiro['B'][1] == 'X':
+            if tabuleiro['C'][2] == '':
+                tabuleiro['C'][2] = 'X'
+            elif tabuleiro['A'][2] == '':
+                tabuleiro['A'][2] = 'X'
+            else:
+                tabuleiro['C'][0] = 'X'
+        elif tabuleiro['A'][1] == '':
+            tabuleiro['A'][1] = 'X'
+        else:
+            tabuleiro['C'][0] = 'X'
+    elif jogada == 7: # 4x vs 3o
+        if tabuleiro['A'][1] == '' and tabuleiro['C'][1] == '' and tabuleiro['B'][1] == 'X':
+            if tabuleiro['A'][1] == '':
+                tabuleiro['A'][1] = 'X'
+            else:
+                tabuleiro['C'][1] = 'X'
+        else:
+            for i in range(3):
+                if tabuleiro['A'][i] == '':
+                    tabuleiro['A'][i] = 'X'
+                    return tabuleiro
+                elif tabuleiro['B'][i] == '':
+                    tabuleiro['B'][i] = 'X'
+                    return tabuleiro
+                elif tabuleiro['C'][i] == '':
+                    tabuleiro['C'][i] = 'X'
+                    return tabuleiro
+    elif jogada == 9: # 5x vs 4o
+        for i in range(3):
+            if tabuleiro['A'][i] == '':
+                tabuleiro['A'][i] = 'X'
+                return tabuleiro
+            elif tabuleiro['B'][i] == '':
+                tabuleiro['B'][i] = 'X'
+                return tabuleiro
+            elif tabuleiro['C'][i] == '':
+                tabuleiro['C'][i] = 'X'
+                return tabuleiro
+
+    return tabuleiro
 def jogadaMaquina(tabuleiro, jogada):
-    print()
-    print('#', jogada)
-    print()
     """
     Processa a jogada que deve ser feita pela máquina
     Parâmetros: tabuleiro, rodada (Contagem de quantas jogadas foram feitas)
     Retorno: tabuleiro
     """
-    if jogada == 1:
-        tabuleiro["A"][0] = "X"
-    elif jogada == 3:
-        if tabuleiro['C'][2] == '':
-            tabuleiro['C'][2] = 'X'
-        else:
-            tabuleiro['A'][2] = 'X'
-    elif jogada == 5:
-        if tabuleiro['A'][1] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == '':
-            tabuleiro['C'][1] = 'X'
-        elif tabuleiro['A'][1] == 'O' and tabuleiro['C'][1] == 'O' and tabuleiro['B'][1] == '':
-            tabuleiro['B'][1] = 'X'
-        elif tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == 'O' and tabuleiro['A'][1] == '':
-            tabuleiro['A'][1] = 'X'
-        elif tabuleiro['B'][0] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == '':
-            tabuleiro['B'][2] = 'X'
-        elif tabuleiro['B'][0] == 'O' and tabuleiro['B'][2] == 'O' and tabuleiro['B'][1] == '':
-            tabuleiro['B'][1] = 'X'
-        elif tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == 'O' and tabuleiro['B'][0] == '':
-            tabuleiro['B'][0] = 'X'
-        elif tabuleiro['C'][0] == '':
-            tabuleiro['C'][0] = 'X'
-        elif tabuleiro['B'][1] == '':
-            tabuleiro['B'][1] = 'X'
-        elif tabuleiro['A'][2] == '':
-            tabuleiro['A'][2] = 'X'
-    elif jogada == 7:
-        if tabuleiro['A'][0] == 'X' and tabuleiro['C'][0] == 'X' and tabuleiro['B'][0] == '':
-            tabuleiro['B'][0] = 'X'
-        elif tabuleiro['C'][0] == 'X' and tabuleiro['C'][2] == 'X' and tabuleiro['C'][1] == '':
-            tabuleiro['C'][1] = 'X'
-        elif tabuleiro['A'][0] == 'X' and tabuleiro['A'][2] == 'X' and tabuleiro['A'][1] == '':
-            tabuleiro['A'][1] = 'X'
-        elif tabuleiro['A'][1] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == '':
-            tabuleiro['C'][1] = 'X'
-        elif tabuleiro['A'][1] == 'O' and tabuleiro['C'][1] == 'O' and tabuleiro['B'][1] == '':
-            tabuleiro['B'][1] = 'X'
-        elif tabuleiro['B'][1] == 'O' and tabuleiro['C'][1] == 'O' and tabuleiro['A'][1] == '':
-            tabuleiro['A'][1] = 'X'
-        elif tabuleiro['B'][0] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == '':
-            tabuleiro['B'][2] = 'X'
-        elif tabuleiro['B'][0] == 'O' and tabuleiro['B'][2] == 'O' and tabuleiro['B'][1] == '':
-            tabuleiro['B'][1] = 'X'
-        elif tabuleiro['B'][1] == 'O' and tabuleiro['B'][2] == 'O' and tabuleiro['B'][0] == '':
-            tabuleiro['B'][0] = 'X'
-        elif tabuleiro['C'][0] == 'O' and tabuleiro['B'][1] == 'O' and tabuleiro['A'][2] == '':
-            tabuleiro['A'][2] = 'X'
-        elif tabuleiro['C'][0] == 'O' and tabuleiro['A'][2] == 'O' and tabuleiro['B'][1] == '':
-            tabuleiro['A'][0] = 'X'
-        elif tabuleiro['B'][1] == 'O' and tabuleiro['A'][2] == 'O' and tabuleiro['C'][0] == '':
-            tabuleiro['C'][0] = 'X'
-        elif (tabuleiro['A'][2] == 'X' and tabuleiro['C'][0] == 'X' and tabuleiro['B'][1] == '') or (tabuleiro['A'][0] == 'X' and tabuleiro['C'][2] == 'X' and tabuleiro['B'][1] == ''):
-            tabuleiro['B'][1] = 'X'
-        elif tabuleiro['B'][0] == '':
-            tabuleiro['B'][0] = 'X'
-        elif tabuleiro['C'][1] == '':
-            tabuleiro['C'][1] = 'X'
-        elif tabuleiro['A'][1] == '':
-            tabuleiro['A'][1] = 'X'
-        elif tabuleiro['B'][1] == '':
-            tabuleiro['B'][1] = 'X'
-    elif jogada == 9:
-        for i in range(3):
-            if tabuleiro['A'][i] == '':
-                tabuleiro['A'][i] = 'X'
-            elif tabuleiro['B'][i] == '':
-                tabuleiro['B'][i] = 'X'
-            elif tabuleiro['C'][i] == '':
-                tabuleiro['C'][i] = 'X'
-
+    (impediu, tabuleiro) = impedirVitoria(tabuleiro)
+    (venceu, tabuleiro) = tentarVencer(tabuleiro)
+    if (not impediu) and (not venceu):
+        tabuleiro = tentarEstrategia(tabuleiro, rodada)
     return tabuleiro
 
 # Dicionário para registro do jogo
