@@ -145,6 +145,12 @@ def tentarVencer(tabuleiro):
         tabuleiro['B'][1] = 'X'
     elif tabuleiro['A'][1] == '' and tabuleiro['C'][1] == 'X' and tabuleiro['B'][1] == 'X':
         tabuleiro['A'][1] = 'X'
+    elif tabuleiro['C'][0] == '' and tabuleiro['C'][1] == 'X' and tabuleiro['C'][2] == 'X':
+        tabuleiro['C'][0] = 'X'
+    elif tabuleiro['C'][1] == '' and tabuleiro['C'][0] == 'X' and tabuleiro['C'][2] == 'X':
+        tabuleiro['C'][1] = 'X'
+    elif tabuleiro['C'][2] == '' and tabuleiro['C'][0] == 'X' and tabuleiro['C'][1] == 'X':
+        tabuleiro['C'][2] = 'X'
     else:
         return (False, tabuleiro)
     return (True, tabuleiro)
@@ -168,6 +174,12 @@ def impedirVitoria(tabuleiro):
         tabuleiro['B'][1] = 'X'
     elif tabuleiro['A'][2] == '' and tabuleiro['C'][0] == 'O' and tabuleiro['B'][1] == 'O':
         tabuleiro['A'][2] = 'X'
+    elif tabuleiro['C'][0] == '' and tabuleiro['C'][1] == 'O' and tabuleiro['C'][2] == 'O':
+        tabuleiro['C'][0] = 'X'
+    elif tabuleiro['C'][1] == '' and tabuleiro['C'][0] == 'O' and tabuleiro['C'][2] == 'O':
+        tabuleiro['C'][1] = 'X'
+    elif tabuleiro['C'][2] == '' and tabuleiro['C'][0] == 'O' and tabuleiro['C'][1] == 'O':
+        tabuleiro['C'][2] = 'X'
     else:
         return (False, tabuleiro)
     return (True, tabuleiro)
@@ -231,7 +243,7 @@ def jogadaMaquina(tabuleiro, jogada):
     (impediu, tabuleiro) = impedirVitoria(tabuleiro)
     (venceu, tabuleiro) = tentarVencer(tabuleiro)
     if (not impediu) and (not venceu):
-        tabuleiro = tentarEstrategia(tabuleiro, rodada)
+        tabuleiro = tentarEstrategia(tabuleiro, jogada)
     return tabuleiro
 
 # Dicionário para registro do jogo
